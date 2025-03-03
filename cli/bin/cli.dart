@@ -1,0 +1,69 @@
+import 'package:cli/Helpers/Parking_helper.dart';
+import 'package:cli/Helpers/Parking_space_helper.dart';
+import 'package:cli/Helpers/Person_helper.dart';
+import 'package:cli/Helpers/Vehicle_helper.dart';
+
+import 'dart:io';
+
+void main(List<String> arguments) {
+
+  start_app();
+
+}
+
+
+void start_app(){
+  String? main_option_input = handle_main_options();
+
+  if(main_option_input != null){
+    handle_selected_option(option: main_option_input);
+  }
+
+}
+
+
+String? handle_main_options(){
+  stdout.writeln('\nVälkommen till Parkeringsappen!\nVad vill du hantera?\n1. Personer\n2. Fordon\n3. Parkeringsplatser\n4. Parkeringar\n5. Avsluta');
+  stdout.write('\nVälj ett alternativ (1-5): ');
+
+  List main_options = ['1', '2', '3', '4', '5'];
+
+  String? input = stdin.readLineSync();
+  if(input is String && input != null && input.isNotEmpty && main_options.contains(input)){
+    if(input == '5'){
+      stdout.write('\nProgram avslutad');
+      exit(0);
+    }
+    else {
+      return input;
+    }
+  }
+  else {
+    stdout.write('\nVälj ett alternativ (1-5): ');
+    handle_main_options();
+  }
+
+
+}
+
+
+void handle_selected_option({required String option}){
+
+  switch (option) {
+    case '1':
+      person_helper.person_options();
+    case '2':
+      vehicle_helper.vehicle_options();
+    case '3':
+      parking_space_helper.parking_space_options();
+    case '4':
+      parking_helper.parking_options();
+    default:
+    //  executeUnknown();
+  }
+}
+
+
+
+
+
