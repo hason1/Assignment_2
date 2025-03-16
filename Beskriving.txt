@@ -1,0 +1,4 @@
+1- Strukturerat om filer från uppgift 1
+2- Skapade server bredvid mitt CLI program via denna kommando: dart create -t server-shelf server.
+3- Testade att server körs via kommando: dart run server:server.
+4- Genererat ett nytt projet mha  dart create -t package cli_shared för att samla kod som både CLI och Server använder
