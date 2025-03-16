@@ -46,17 +46,17 @@ String? handle_main_options(){
 }
 
 
-void handle_selected_option({required String option}){
+void handle_selected_option({required String option}) async{
 
   switch (option) {
     case '1':
-      person_helper.input_handler();
+      await person_helper.input_handler();
     case '2':
-      vehicle_helper.input_handler();
+      await vehicle_helper.input_handler();
     case '3':
-      parking_space_helper.input_handler();
+      await parking_space_helper.input_handler();
     case '4':
-      parking_helper.input_handler();
+     await parking_helper.input_handler();
     default:
     //  executeUnknown();
   }
