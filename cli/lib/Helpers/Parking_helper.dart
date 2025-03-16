@@ -9,7 +9,7 @@ import 'package:cli/Repositories/Parking_space_repository.dart';
 import 'package:cli/Repositories/Vehicle_repository.dart';
 
 class parking_helper {
-  static parking_options({String user_input = ''}){
+  static input_handler({String user_input = ''}){
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -43,12 +43,12 @@ class parking_helper {
             }
             else {
               print('Fyll i parkeringsplats numret och fordons numret, vänligen försök igen \n');
-              parking_options(user_input: option);
+              input_handler(user_input: option);
             }
 
             if(parking_space == null || vehicle == null){
               print('Parkeringsplatsen eller fordonet existerar inte, fordon och parkering platsen måste existera för att lägga parkeringen. vänligen försök igen \n');
-              parking_options();
+              input_handler();
             }
 
 
@@ -62,16 +62,16 @@ class parking_helper {
 
               print('\nParkeringen är skapad \n');
 
-              parking_options();
+              input_handler();
             }
             else {
               print('\n Ett fel har inträffat, vänligen försök igen \n');
-              parking_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
           catch(e){
             print('\n Ett fel har inträffat, vänligen försök igen \n');
-            parking_options(user_input: option);
+            input_handler(user_input: option);
           }
         case '2': // Visa alla
           List parkings_to_print = ParkingRepository.getAll();
@@ -90,20 +90,20 @@ class parking_helper {
                 print("Starttid: ${parking.start_time}, Sluttid: ${parking.end_time}");
               }
             }
-            parking_options();
+            input_handler();
           }
           else {
             print("Inga parkeringar tillagda");
-            parking_options();
+            input_handler();
           }
         case '3':
-          parking_options();
+          input_handler();
         default:
-          parking_options();
+          input_handler();
       }
     }
     else {
-      parking_options();
+      input_handler();
     }
 
 

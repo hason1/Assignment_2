@@ -51,13 +51,13 @@ void handle_selected_option({required String option}){
 
   switch (option) {
     case '1':
-      person_helper.person_options();
+      person_helper.input_handler();
     case '2':
-      vehicle_helper.vehicle_options();
+      vehicle_helper.input_handler();
     case '3':
-      parking_space_helper.parking_space_options();
+      parking_space_helper.input_handler();
     case '4':
-      parking_helper.parking_options();
+      parking_helper.input_handler();
     default:
     //  executeUnknown();
   }

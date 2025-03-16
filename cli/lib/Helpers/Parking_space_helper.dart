@@ -5,7 +5,7 @@ import 'package:cli/Helpers/Tools.dart';
 import 'package:cli/Repositories/Parking_space_repository.dart';
 
 class parking_space_helper {
-  static parking_space_options({String user_input = ''}){
+  static input_handler({String user_input = ''}){
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -41,7 +41,7 @@ class parking_space_helper {
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
-              parking_space_options(user_input: option);
+              input_handler(user_input: option);
             }
 
 
@@ -49,16 +49,16 @@ class parking_space_helper {
               ParkingSpaceRepository.add(new_parking_space);
               print('Parkeringsplatsen är tillagd \n');
 
-              parking_space_options();
+              input_handler();
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
-              parking_space_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
           catch(e){
             print('Ett fel har inträffat, vänligen försök igen \n');
-            parking_space_options(user_input: option);
+            input_handler(user_input: option);
           }
         case '2': // Visa alla
           List parking_spaces_to_print = ParkingSpaceRepository.getAll();
@@ -69,11 +69,11 @@ class parking_space_helper {
                 print("Nummer: ${park_space.number}, Adress: ${park_space.address} Pris: ${park_space.price}\n");
               }
             }
-            parking_space_options();
+            input_handler();
           }
           else {
             print("Inga parkeringsplatser tillagda");
-            parking_space_options();
+            input_handler();
           }
         case '3': // Uppdaera
           stdout.write('\nSkriv numret för parkeringsplatsen du vill uppdatera: ');
@@ -90,16 +90,16 @@ class parking_space_helper {
               if(address != null && address.isNotEmpty){
                 parking.address = address ?? '';
                 print('Parkeringsplats ändrad');
-                parking_space_options();
+                input_handler();
               }
               else{
-                parking_space_options(user_input: option);
+                input_handler(user_input: option);
               }
 
             }
             else {
               print('Kunde inte hitta parkeringsplatsen, vänligen försök igen');
-              parking_space_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
 
@@ -118,29 +118,29 @@ class parking_space_helper {
 
               if(result == true){
                 print('Parkeringen med numret ' + parking.number + ' togs bort');
-                parking_space_options();
+                input_handler();
               }
               else{
                 print('Ett fel har inträffat, vänligen försök igen');
-                parking_space_options(user_input: option);
+                input_handler(user_input: option);
               }
 
             }
             else {
               print('Kunde inte hitta parkeringsplatsen, vänligen försök igen');
-              parking_space_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
 
 
         case '5':
-          parking_space_options();
+          input_handler();
         default:
-          parking_space_options();
+          input_handler();
       }
     }
     else {
-      parking_space_options();
+      input_handler();
     }
   }
 }

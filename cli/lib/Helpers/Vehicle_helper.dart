@@ -6,7 +6,7 @@ import 'package:cli/Repositories/Person_repository.dart';
 import 'package:cli/Repositories/Vehicle_repository.dart';
 
 class vehicle_helper {
-  static vehicle_options({String user_input = ''}){
+  static input_handler({String user_input = ''}){
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -50,7 +50,7 @@ class vehicle_helper {
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
-              vehicle_options(user_input: option);
+              input_handler(user_input: option);
             }
 
             if(new_vehicle != null && vehicle_owner != null){
@@ -63,16 +63,16 @@ class vehicle_helper {
                 PersonRepository.add(vehicle_owner);
               }
 
-              vehicle_options();
+              input_handler();
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
-              vehicle_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
           catch(e){
             print('Ett fel har inträffat, vänligen försök igen \n');
-            vehicle_options(user_input: option);
+            input_handler(user_input: option);
           }
         case '2': // Visa alla
           List vehicles_to_print = VehicleRepository.getAll();
@@ -84,11 +84,11 @@ class vehicle_helper {
                 print("Ägeranesnamn: ${vehicle.person.name}, Ägeranes Personnummer: ${vehicle.person.person_number} \n");
               }
             }
-            vehicle_options();
+            input_handler();
           }
           else {
             print("Inga bilar tillagda");
-            vehicle_options();
+            input_handler();
           }
         case '3': // Uppdaera
           stdout.write('\nSkriv regnumret för fordonet du vill uppdatera: ');
@@ -108,16 +108,16 @@ class vehicle_helper {
                 vehicle.person!.name = name ?? '';
                 vehicle.person!.person_number = person_number ?? '';
                 print('Person ändrad');
-                vehicle_options();
+                input_handler();
               }
               else{
-                vehicle_options(user_input: option);
+                input_handler(user_input: option);
               }
 
             }
             else {
               print('Kunde inte hitta fordonet, vänligen försök igen');
-              vehicle_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
 
@@ -136,29 +136,29 @@ class vehicle_helper {
 
               if(result == true){
                 print(vehicle.registration_number + ' tog bort');
-                vehicle_options();
+                input_handler();
               }
               else{
                 print('Ett fel har inträffat, vänligen försök igen');
-                vehicle_options(user_input: option);
+                input_handler(user_input: option);
               }
 
             }
             else {
               print('Kunde inte hitta fordonet, vänligen försök igen');
-              vehicle_options(user_input: option);
+              input_handler(user_input: option);
             }
           }
 
 
         case '5':
-          vehicle_options();
+          input_handler();
         default:
-          vehicle_options();
+          input_handler();
       }
     }
     else {
-      vehicle_options();
+      input_handler();
     }
 
 
