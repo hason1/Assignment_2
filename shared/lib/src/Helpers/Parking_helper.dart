@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:shared/shared.dart';
 
 class parking_helper {
-  static input_handler({String user_input = ''}){
+  static input_handler({String user_input = ''}) async{
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -32,8 +32,8 @@ class parking_helper {
             Vehicle? vehicle;
             ParkingSpace? parking_space;
             if(reg_number != null && reg_number.isNotEmpty && park_space_number != null && park_space_number.isNotEmpty){
-              parking_space =  ParkingSpaceRepository.getByNumber(park_space_number);
-              vehicle =  VehicleRepository.getById(reg_number);
+              parking_space =  await ParkingSpaceRepository.getByNumber(park_space_number);
+              vehicle = await VehicleRepository.getById(reg_number);
             }
             else {
               print('Fyll i parkeringsplats numret och fordons numret, vänligen försök igen \n');
@@ -68,7 +68,7 @@ class parking_helper {
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List parkings_to_print = ParkingRepository.getAll();
+          List parkings_to_print = await ParkingRepository.getAll();
           if(parkings_to_print.isNotEmpty){
             print("\nAlla parkeringar:");
             for (var parking in parkings_to_print) {

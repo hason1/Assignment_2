@@ -4,15 +4,15 @@ import 'package:shared/shared.dart';
 class PersonRepository {
   static final List<Person> _persons = [];
 
-  static add(Person person) {
+  static add(Person person) async {
     _persons.add(person);
   }
 
-  static List<Person> getAll() {
+  static Future<List<Person>> getAll() async {
     return _persons;
   }
 
-  static Person? getById(String personNumber) {
+  static Future<Person?> getById(String personNumber) async {
     try {
       return _persons.firstWhere((p) => p.person_number == personNumber);
     } catch (e) {
@@ -20,7 +20,7 @@ class PersonRepository {
     }
   }
 
-  static bool update(Person updatedPerson) {
+  static Future<bool> update(Person updatedPerson) async {
     for (int i = 0; i < _persons.length; i++) {
       if (_persons[i].person_number == updatedPerson.person_number) {
         _persons[i] = updatedPerson;
@@ -30,7 +30,7 @@ class PersonRepository {
     return false;
   }
 
-  static bool delete(String personNumber) {
+  static Future<bool> delete(String personNumber) async {
     try {
       _persons.removeWhere((p) => p.person_number == personNumber);
       return true;

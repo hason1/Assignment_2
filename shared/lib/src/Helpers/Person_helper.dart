@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:shared/shared.dart';
 
 class person_helper {
-  static input_handler({String user_input = ''}){
+  static input_handler({String user_input = ''}) async{
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
     if(user_input.isNotEmpty){
@@ -39,7 +39,7 @@ class person_helper {
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List persons_to_print = PersonRepository.getAll();
+          List persons_to_print = await PersonRepository.getAll();
           if(persons_to_print.isNotEmpty){
             print("\nAlla personer:");
             for (var person in persons_to_print) {
@@ -56,7 +56,7 @@ class person_helper {
           String? person_number = stdin.readLineSync();
 
           if(person_number != null && person_number.isNotEmpty){
-            Person? person = PersonRepository.getById(person_number);
+            Person? person = await PersonRepository.getById(person_number);
 
             if(person != null){
               stdout.write('\nPerson hittad, Skriv person namn: ');
@@ -85,11 +85,11 @@ class person_helper {
 
           if(person_number != null && person_number.isNotEmpty){
 
-            Person? person = PersonRepository.getById(person_number);
+            Person? person = await PersonRepository.getById(person_number);
 
             if(person != null){
 
-              bool result = PersonRepository.delete(person.person_number);
+              bool result = await PersonRepository.delete(person.person_number);
 
               if(result == true){
                 print(person.name + ' tog bort');

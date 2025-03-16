@@ -4,15 +4,15 @@ import 'package:shared/shared.dart';
 class VehicleRepository {
  static final List<Vehicle> _vehicles = [];
 
-  static add(Vehicle vehicle) {
+  static add(Vehicle vehicle) async {
     _vehicles.add(vehicle);
   }
 
-  static List<Vehicle> getAll() {
+  static Future<List<Vehicle>> getAll() async {
     return _vehicles;
   }
 
-  static Vehicle? getById(String registrationNumber) {
+  static Future<Vehicle?> getById(String registrationNumber) async {
     try {
       return _vehicles.firstWhere((v) => v.registration_number == registrationNumber);
     } catch (e) {
@@ -20,7 +20,7 @@ class VehicleRepository {
     }
   }
 
-  static bool update(Vehicle updatedVehicle) {
+  static Future<bool> update(Vehicle updatedVehicle) async {
     for (int i = 0; i < _vehicles.length; i++) {
       if (_vehicles[i].registration_number == updatedVehicle.registration_number) {
         _vehicles[i] = updatedVehicle;
@@ -30,7 +30,7 @@ class VehicleRepository {
     return false;
   }
 
-  static bool delete(String registrationNumber) {
+  static Future<bool> delete(String registrationNumber) async {
     try {
       _vehicles.removeWhere((v) => v.registration_number == registrationNumber);
       return true;

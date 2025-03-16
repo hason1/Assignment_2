@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:shared/shared.dart';
 
 class vehicle_helper {
-  static input_handler({String user_input = ''}){
+  static input_handler({String user_input = ''}) async{
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -55,7 +55,7 @@ class vehicle_helper {
               VehicleRepository.add(new_vehicle);
 
               // Kontrollera att personen är inte redan registrerad
-              Person? person = PersonRepository.getById(vehicle_owner.person_number);
+              Person? person = await PersonRepository.getById(vehicle_owner.person_number);
               if(person == null){
                 PersonRepository.add(vehicle_owner);
               }
@@ -72,7 +72,7 @@ class vehicle_helper {
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List vehicles_to_print = VehicleRepository.getAll();
+          List vehicles_to_print = await VehicleRepository.getAll();
           if(vehicles_to_print.isNotEmpty){
             print("\nAlla fordon:");
             for (var vehicle in vehicles_to_print) {
@@ -92,7 +92,7 @@ class vehicle_helper {
           String? reg_number = stdin.readLineSync();
 
           if(reg_number != null && reg_number.isNotEmpty){
-            Vehicle? vehicle = VehicleRepository.getById(reg_number);
+            Vehicle? vehicle = await VehicleRepository.getById(reg_number);
 
             if(vehicle != null){
               stdout.write('\nFordon hittad, Ändra ägeranes namn: ');
@@ -125,11 +125,11 @@ class vehicle_helper {
 
           if(reg_number != null && reg_number.isNotEmpty){
 
-            Vehicle? vehicle = VehicleRepository.getById(reg_number);
+            Vehicle? vehicle = await VehicleRepository.getById(reg_number);
 
             if(vehicle != null){
 
-              bool result = VehicleRepository.delete(vehicle.registration_number);
+              bool result = await VehicleRepository.delete(vehicle.registration_number);
 
               if(result == true){
                 print(vehicle.registration_number + ' tog bort');

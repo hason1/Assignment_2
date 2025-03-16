@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:shared/shared.dart';
 
 class parking_space_helper {
-  static input_handler({String user_input = ''}){
+  static input_handler({String user_input = ''}) async{
 
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -59,7 +59,7 @@ class parking_space_helper {
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List parking_spaces_to_print = ParkingSpaceRepository.getAll();
+          List parking_spaces_to_print = await ParkingSpaceRepository.getAll();
           if(parking_spaces_to_print.isNotEmpty){
             print("\nAlla parkeringsplatser:");
             for (var park_space in parking_spaces_to_print) {
@@ -78,7 +78,7 @@ class parking_space_helper {
           String? number = stdin.readLineSync();
 
           if(number != null && number.isNotEmpty){
-            ParkingSpace? parking = ParkingSpaceRepository.getByNumber(number);
+            ParkingSpace? parking = await ParkingSpaceRepository.getByNumber(number);
 
             if(parking != null){
               stdout.write('\nParkeringsplats hittad, Ändra adress: ');
@@ -108,11 +108,11 @@ class parking_space_helper {
 
           if(number != null && number.isNotEmpty){
 
-            ParkingSpace? parking = ParkingSpaceRepository.getByNumber(number);
+            ParkingSpace? parking = await ParkingSpaceRepository.getByNumber(number);
 
             if(parking != null){
 
-              bool result = ParkingSpaceRepository.delete(parking.number);
+              bool result = await ParkingSpaceRepository.delete(parking.number);
 
               if(result == true){
                 print('Parkeringen med numret ' + parking.number + ' togs bort');
