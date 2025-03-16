@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:cli/Classes/Person.dart';
-import 'package:cli/Repositories/Person_repository.dart';
+import 'package:shared/shared.dart';
 
 class person_helper {
   static input_handler({String user_input = ''}){

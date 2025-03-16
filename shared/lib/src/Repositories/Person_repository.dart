@@ -1,4 +1,5 @@
-import 'package:cli/Classes/Person.dart';
+
+import 'package:shared/shared.dart';
 
 class PersonRepository {
   static final List<Person> _persons = [];

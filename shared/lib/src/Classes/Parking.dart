@@ -1,5 +1,6 @@
-import 'package:cli/Classes/ParkingSpace.dart';
-import 'package:cli/Classes/Vehicle.dart';
+
+
+import 'package:shared/shared.dart';
 
 class Parking {
   Vehicle vehicle;

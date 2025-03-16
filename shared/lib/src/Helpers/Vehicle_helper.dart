@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:cli/Classes/Person.dart';
-import 'package:cli/Classes/Vehicle.dart';
-import 'package:cli/Repositories/Person_repository.dart';
-import 'package:cli/Repositories/Vehicle_repository.dart';
+import 'package:shared/shared.dart';
 
 class vehicle_helper {
   static input_handler({String user_input = ''}){

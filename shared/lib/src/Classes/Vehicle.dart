@@ -1,4 +1,5 @@
-import 'package:cli/Classes/Person.dart';
+
+import 'package:shared/shared.dart';
 
 class Vehicle {
   String registration_number;

@@ -1,4 +1,5 @@
-import 'package:cli/Classes/Parking.dart';
+
+import 'package:shared/shared.dart';
 
 class ParkingRepository {
   static final List<Parking> _parkings = [];

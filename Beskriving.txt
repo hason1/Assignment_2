@@ -2,3 +2,6 @@
 2- Skapade server bredvid mitt CLI program via denna kommando: dart create -t server-shelf server.
 3- Testade att server körs via kommando: dart run server:server.
 4- Genererat ett nytt projet mha  dart create -t package cli_shared för att samla kod som både CLI och Server använder
+5- Flyttat mappar som kommer användas i både CLI och Server: repositories, helpers och classes.
+6- i CLI - pubspec.yaml har jag lagt länken/import till projekten server och shared i dependencies
+7- i shared.dart har jag exporterat de flyttatde mapparna så att de kan användas i både cli och server

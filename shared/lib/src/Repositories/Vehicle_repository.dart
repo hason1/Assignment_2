@@ -1,4 +1,5 @@
-import 'package:cli/Classes/Vehicle.dart';
+
+import 'package:shared/shared.dart';
 
 class VehicleRepository {
  static final List<Vehicle> _vehicles = [];
