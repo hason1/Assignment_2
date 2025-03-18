@@ -1,8 +1,13 @@
 import 'dart:io';
 
+import 'package:cli/Main_functions.dart';
+import 'package:cli/Repositories/Person_repository.dart';
+import 'package:cli/Repositories/Vehicle_repository.dart';
 import 'package:shared/shared.dart';
 
-class vehicle_helper {
+import '../Tools.dart';
+
+class vehicle_menu {
   static input_handler({String user_input = ''}) async{
 
     List main_options = ['1', '2', '3', '4', '5'];
@@ -43,7 +48,7 @@ class vehicle_helper {
 
             Person? vehicle_owner;
             if(person_name != null && person_name.isNotEmpty && person_number != null && person_number.isNotEmpty){
-              vehicle_owner = Person(name: person_name ?? '', person_number: person_number ?? '');
+              vehicle_owner = Person(id: Tools.generateId(), name: person_name ?? '', person_number: person_number ?? '');
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
@@ -55,7 +60,7 @@ class vehicle_helper {
               VehicleRepository.add(new_vehicle);
 
               // Kontrollera att personen är inte redan registrerad
-              Person? person = await PersonRepository.getById(vehicle_owner.person_number);
+              dynamic person = await PersonRepository.get_by_number(vehicle_owner.person_number);
               if(person == null){
                 PersonRepository.add(vehicle_owner);
               }
@@ -149,9 +154,9 @@ class vehicle_helper {
 
 
         case '5':
-          input_handler();
+          main_functions.start_app();
         default:
-          input_handler();
+          main_functions.start_app();
       }
     }
     else {

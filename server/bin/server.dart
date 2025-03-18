@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:server/Handlers/Person_handler.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -8,7 +10,12 @@ import 'package:shelf_router/shelf_router.dart';
 final _router =
     Router()
       ..get('/', _rootHandler)
-      ..get('/echo/<message>', _echoHandler);
+      ..get('/echo/<message>', _echoHandler)
+      ..post('/persons', person_handler.add_person)
+      ..get('/persons', person_handler.get_persons)
+      ..get('/persons/<id>', person_handler.get_person)
+      ..put('/persons/<id>', person_handler.update_person)
+      ..delete('/persons/<id>', person_handler.delete_person);
 
 Response _rootHandler(Request req) {
   return Response.ok('Hello, World!\n');

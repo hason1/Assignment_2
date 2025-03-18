@@ -1,10 +1,13 @@
+import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:shared/shared.dart';
+import 'package:http/http.dart' as http;
 
 class VehicleRepository {
  static final List<Vehicle> _vehicles = [];
 
-  static add(Vehicle vehicle) async {
+ static Future<Vehicle?> add(Vehicle vehicle) async {
     _vehicles.add(vehicle);
   }
 

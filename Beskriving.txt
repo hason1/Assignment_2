@@ -2,8 +2,11 @@
 2- Skapade server bredvid mitt CLI program via denna kommando: dart create -t server-shelf server.
 3- Testade att server körs via kommando: dart run server:server.
 4- Genererat ett nytt projekt mha  dart create -t package shared för att samla kod som både CLI och Server använder
-5- Flyttat mappar som kommer användas i både CLI och Server: repositories, helpers och classes.
+5- Flyttat mappar som "classes" kommer användas i både CLI och Server till shared
 6- i Server och CLI - pubspec.yaml har jag lagt länken/import till shared projektet i dependencies
-7- i shared.dart har jag exporterat de flyttade mapparna så att de kan användas i både cli och server
+7- Shared -> shared.dart har jag exporterat de flyttade mapparna så att de kan användas i både cli och server
 8- Testat att min CLI fortfarande fungerar som det ska.
-9- Konverterat funktioner i Repositories till Future och när de anropas från Helpers för kilenten blir await 
+9- Konverterat funktioner i cli Repositories till Future
+10- Cli -> Repositories funktioner innehåll ändrades så att den kan kommunicera med server
+11- I Server  skapade jag File_helper.dart för att server kommer spara data i fil, denna fil helper hanterar data lagring.
+12- För att hantera server anrop från klienten så skapade handler för personer, fordon, parkering som tar emot användarens anrop och hantera det genom att spara eller returnera data som json

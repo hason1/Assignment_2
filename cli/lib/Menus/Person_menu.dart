@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:cli/Main_functions.dart';
+import 'package:cli/Repositories/Person_repository.dart';
+import 'package:cli/Tools.dart';
 import 'package:shared/shared.dart';
 
-class person_helper {
+class person_menu {
   static input_handler({String user_input = ''}) async{
     List main_options = ['1', '2', '3', '4', '5'];
     String? option;
@@ -25,8 +28,16 @@ class person_helper {
             String? person_number = stdin.readLineSync();
 
             if(person_name != null && person_name.isNotEmpty && person_number != null && person_number.isNotEmpty){
-              PersonRepository.add(Person(name: person_name ?? '', person_number: person_number ?? ''));
-              print('$person_name tillagd');
+              dynamic person = await PersonRepository.get_by_number(person_number);
+
+              if(person != null && person is Person){
+                print('$person_name existerar redan');
+              }
+              else {
+                await PersonRepository.add(Person(id: Tools.generateId(), name: person_name ?? '', person_number: person_number ?? ''));
+                print('$person_name tillagd');
+              }
+
               input_handler();
             }
             else {
@@ -56,7 +67,7 @@ class person_helper {
           String? person_number = stdin.readLineSync();
 
           if(person_number != null && person_number.isNotEmpty){
-            Person? person = await PersonRepository.getById(person_number);
+            Person? person = await PersonRepository.get_by_number(person_number);
 
             if(person != null){
               stdout.write('\nPerson hittad, Skriv person namn: ');
@@ -64,6 +75,7 @@ class person_helper {
 
               if(name != null && name.isNotEmpty){
                 person.name = name ?? '';
+                 await PersonRepository.update(person);
                 print('Person ändrad');
                 input_handler();
               }
@@ -85,11 +97,11 @@ class person_helper {
 
           if(person_number != null && person_number.isNotEmpty){
 
-            Person? person = await PersonRepository.getById(person_number);
+            Person? person = await PersonRepository.get_by_number(person_number);
 
             if(person != null){
 
-              bool result = await PersonRepository.delete(person.person_number);
+              bool result = await PersonRepository.delete(person.id);
 
               if(result == true){
                 print(person.name + ' tog bort');
@@ -109,7 +121,7 @@ class person_helper {
 
 
         case '5':
-          input_handler();
+          main_functions.start_app();;
         default:
           input_handler();
       }
