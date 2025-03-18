@@ -16,7 +16,7 @@ class vehicle_menu {
       option = user_input;
     }
     else {
-      stdout.writeln('\nDu har valt att hantera Fordon. Vad vill du göra?\n1. Lägg till nytt fordon\n2. Visa alla fordon\n3. Uppdatera fordon\n4. Ta bort fordon\n5. Gå tillbaka till huvudmenyn');
+      stdout.writeln('\nDu har valt att hantera Fordon. Vad vill du göra?\n1. Lägg till nytt fordon\n2. Visa alla fordon\n3. Ändra fordon ägare\n4. Ta bort fordon\n5. Gå tillbaka till huvudmenyn');
       stdout.write('\nVälj ett alternativ (1-5): ');
       option = stdin.readLineSync();
     }
@@ -30,60 +30,65 @@ class vehicle_menu {
             stdout.write('\nSkriv registrering nummer: ');
             String? reg_number = stdin.readLineSync();
 
+
+
+
+            Vehicle? new_vehicle;
+            if(reg_number != null && reg_number.isNotEmpty){
+              dynamic vehicle = await VehicleRepository.get_by_id(reg_number);
+
+              if(vehicle != null && vehicle is Vehicle){
+                print('\nFordonet existrerar redan, vänligen försök igen');
+                input_handler(user_input: user_input);
+              }
+
+            }
+
             stdout.write('Skriv fordon typ: ');
             String? type = stdin.readLineSync();
 
 
-            Vehicle? new_vehicle;
-            if(reg_number != null && reg_number.isNotEmpty && type != null && type.isNotEmpty){
-              new_vehicle =  Vehicle(registration_number: reg_number ?? '', type: type ?? '', );
-            }
-
-            stdout.write('Skriv ägarens namn: ');
-            String? person_name = stdin.readLineSync();
-
             stdout.write('Skriv ägarens personnummer: ');
             String? person_number = stdin.readLineSync();
 
+            new_vehicle =  Vehicle(id: Tools.generateId(), registration_number: reg_number ?? '', type: type ?? '', );
+            VehicleRepository.add(new_vehicle);
+            print('Bilen är tillgad');
 
-            Person? vehicle_owner;
-            if(person_name != null && person_name.isNotEmpty && person_number != null && person_number.isNotEmpty){
-              vehicle_owner = Person(id: Tools.generateId(), name: person_name ?? '', person_number: person_number ?? '');
-            }
-            else {
-              print('Ett fel har inträffat, vänligen försök igen \n');
-              input_handler(user_input: option);
-            }
+            if(person_number != null && person_number.isNotEmpty){
+              dynamic person = await PersonRepository.get_person(person_number);
 
-            if(new_vehicle != null && vehicle_owner != null){
-              new_vehicle.person = vehicle_owner;
-              VehicleRepository.add(new_vehicle);
-
-              // Kontrollera att personen är inte redan registrerad
-              dynamic person = await PersonRepository.get_by_number(vehicle_owner.person_number);
-              if(person == null){
-                PersonRepository.add(vehicle_owner);
+              if(person != null && person is Person){
+                new_vehicle.person_id = person.id;
+                VehicleRepository.update(new_vehicle);
+                print('Bilen är uppdaterat med ägeren');
               }
+              else {
+                print('Kunde inte hitta personen');
+              }
+
 
               input_handler();
             }
-            else {
-              print('Ett fel har inträffat, vänligen försök igen \n');
-              input_handler(user_input: option);
-            }
+
           }
           catch(e){
             print('Ett fel har inträffat, vänligen försök igen \n');
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List vehicles_to_print = await VehicleRepository.getAll();
+          List vehicles_to_print = await VehicleRepository.get_all();
           if(vehicles_to_print.isNotEmpty){
             print("\nAlla fordon:");
-            for (var vehicle in vehicles_to_print) {
-              if(vehicle.person != null){
+            for (Vehicle vehicle in vehicles_to_print) {
+              if(vehicle != null){
                 print("Regnummer: ${vehicle.registration_number}, Typ: ${vehicle.type}");
-                print("Ägeranesnamn: ${vehicle.person.name}, Ägeranes Personnummer: ${vehicle.person.person_number} \n");
+                if(vehicle.person_id != null && vehicle.person_id!.isNotEmpty){
+                  dynamic person = await PersonRepository.get_person(vehicle.person_id.toString());
+                  if(person != null && person is Person){
+                    print("Ägaersnamn: ${person.name}");
+                  }
+                }
               }
             }
             input_handler();
@@ -97,19 +102,21 @@ class vehicle_menu {
           String? reg_number = stdin.readLineSync();
 
           if(reg_number != null && reg_number.isNotEmpty){
-            Vehicle? vehicle = await VehicleRepository.getById(reg_number);
+            Vehicle? vehicle = await VehicleRepository.get_by_id(reg_number);
 
             if(vehicle != null){
-              stdout.write('\nFordon hittad, Ändra ägeranes namn: ');
-              String? name = stdin.readLineSync();
+              print('Bilen hittad');
 
               stdout.write('Skriv ägarens personnummer: ');
               String? person_number = stdin.readLineSync();
 
-              if(name != null && name.isNotEmpty){
-                vehicle.person!.name = name ?? '';
-                vehicle.person!.person_number = person_number ?? '';
-                print('Person ändrad');
+              if(person_number != null && person_number.isNotEmpty){
+                dynamic person = await PersonRepository.get_person(person_number);
+                if(person != null  && person is Person){
+                  vehicle.person_id = person.id.toString();
+                   await VehicleRepository.update(vehicle);
+                }
+                print('Ägarens ändrad');
                 input_handler();
               }
               else{
@@ -130,11 +137,11 @@ class vehicle_menu {
 
           if(reg_number != null && reg_number.isNotEmpty){
 
-            Vehicle? vehicle = await VehicleRepository.getById(reg_number);
+            Vehicle? vehicle = await VehicleRepository.get_by_id(reg_number);
 
             if(vehicle != null){
 
-              bool result = await VehicleRepository.delete(vehicle.registration_number);
+              bool result = await VehicleRepository.delete(vehicle.id);
 
               if(result == true){
                 print(vehicle.registration_number + ' tog bort');

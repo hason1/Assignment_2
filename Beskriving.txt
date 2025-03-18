@@ -1,4 +1,4 @@
-1- Strukturerat om filer från uppgift 1
+1- Strukturerat om filer från uppgift 1, flyttat funktioner till olika filer i olika mappar
 2- Skapade server bredvid mitt CLI program via denna kommando: dart create -t server-shelf server.
 3- Testade att server körs via kommando: dart run server:server.
 4- Genererat ett nytt projekt mha  dart create -t package shared för att samla kod som både CLI och Server använder
@@ -10,3 +10,4 @@
 10- Cli -> Repositories funktioner innehåll ändrades så att den kan kommunicera med server
 11- I Server  skapade jag File_helper.dart för att server kommer spara data i fil, denna fil helper hanterar data lagring.
 12- För att hantera server anrop från klienten så skapade handler för personer, fordon, parkering som tar emot användarens anrop och hantera det genom att spara eller returnera data som json
+13- Class ändring: id sträng parameter är tillagd

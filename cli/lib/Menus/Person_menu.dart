@@ -28,7 +28,7 @@ class person_menu {
             String? person_number = stdin.readLineSync();
 
             if(person_name != null && person_name.isNotEmpty && person_number != null && person_number.isNotEmpty){
-              dynamic person = await PersonRepository.get_by_number(person_number);
+              dynamic person = await PersonRepository.get_person(person_number);
 
               if(person != null && person is Person){
                 print('$person_name existerar redan');
@@ -67,7 +67,7 @@ class person_menu {
           String? person_number = stdin.readLineSync();
 
           if(person_number != null && person_number.isNotEmpty){
-            Person? person = await PersonRepository.get_by_number(person_number);
+            Person? person = await PersonRepository.get_person(person_number);
 
             if(person != null){
               stdout.write('\nPerson hittad, Skriv person namn: ');
@@ -97,7 +97,7 @@ class person_menu {
 
           if(person_number != null && person_number.isNotEmpty){
 
-            Person? person = await PersonRepository.get_by_number(person_number);
+            Person? person = await PersonRepository.get_person(person_number);
 
             if(person != null){
 

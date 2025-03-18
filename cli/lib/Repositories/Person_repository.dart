@@ -38,8 +38,8 @@ class PersonRepository {
     return (json as List).map((e) => Person.fromJson(e)).toList();
   }
 
-  static Future<Person?> get_by_number(String personNumber) async {
-    final uri = Uri.parse("http://localhost:8080/persons/${personNumber}");
+  static Future<Person?> get_person(String id_or_number) async {
+    final uri = Uri.parse("http://localhost:8080/persons/${id_or_number}");
 
     Response response = await http.get(
       uri,

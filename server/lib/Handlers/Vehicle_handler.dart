@@ -6,27 +6,27 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 // Person server request handler
-class person_handler{
- static String path = "./persons.json";
+class vehicle_handler{
+  static String path = "./vehicles.json";
 
-  static Future<Response> add_person(Request request) async {
+  static Future<Response> add_vehicle(Request request) async {
     final data = await request.readAsString();
     final json = jsonDecode(data);
-    var person = Person.fromJson(json);
+    var vehicle = Vehicle.fromJson(json);
 
-    final success = await file_helper.create(path: path, json_data: person.toJson());
+    final success = await file_helper.create(path: path, json_data: vehicle.toJson());
     return Response.ok(
-      jsonEncode(success ? person.toJson() : null),
+      jsonEncode(success ? vehicle.toJson() : null),
       headers: {'Content-Type': 'application/json'},
     );
 
   }
 
-  static Future<Response> get_persons(Request request) async {
+  static Future<Response> get_vehicles(Request request) async {
     final items = await file_helper.getAll(path: path,);
-    List<Person> persons = items.map((json) => Person.fromJson(json)).toList();
+    List<Vehicle> vehicles = items.map((json) => Vehicle.fromJson(json)).toList();
 
-    final payload = persons.map((e) => e.toJson()).toList();
+    final payload = vehicles.map((e) => e.toJson()).toList();
 
     return Response.ok(
       jsonEncode(payload),
@@ -34,29 +34,29 @@ class person_handler{
     );
   }
 
-  static Future<Response> update_person(Request request) async {
+  static Future<Response> update_vehicle(Request request) async {
     String? id = request.params["id"];
 
     if (id != null) {
       final data = await request.readAsString();
       final json = jsonDecode(data);
-      Person? person = Person.fromJson(json);
+      Vehicle? vehicle = Vehicle.fromJson(json);
 
-      final success = await file_helper.update(path: path, id: id, json_data: person.toJson());
+      final success = await file_helper.update(path: path, id: id, json_data: vehicle.toJson());
 
       return Response.ok(
-        jsonEncode(success ? person.toJson() : null),
+        jsonEncode(success ? vehicle.toJson() : null),
         headers: {'Content-Type': 'application/json'},
       );
     }
     return Response.badRequest();
   }
 
-  static Future<Response> delete_person(Request request) async {
+  static Future<Response> delete_vehicle(Request request) async {
     String? id = request.params["id"];
 
     if (id != null) {
-       await file_helper.delete(path: path, id: id);
+      await file_helper.delete(path: path, id: id);
 
       return Response.ok(
         jsonEncode(true),
@@ -67,18 +67,18 @@ class person_handler{
     return Response.badRequest();
   }
 
-  static Future<Response> get_person(Request request) async {
+  static Future<Response> get_vehicle(Request request) async {
     String? id = request.params["id"];
 
     if (id != null) {
       final items = await file_helper.getAll(path: path,);
-      List<Person> persons = items.map((json) => Person.fromJson(json)).toList();
+      List<Vehicle> vehicles = items.map((json) => Vehicle.fromJson(json)).toList();
 
-      for(int i=0; i<persons.length; i++){
+      for(int i=0; i<vehicles.length; i++){
 
-        if(persons[i].id == id || persons[i].person_number == id){
+        if(vehicles[i].id == id || vehicles[i].registration_number == id){
           return Response.ok(
-            jsonEncode(persons[i].toJson()),
+            jsonEncode(vehicles[i].toJson()),
             headers: {'Content-Type': 'application/json'},
           );
         }
