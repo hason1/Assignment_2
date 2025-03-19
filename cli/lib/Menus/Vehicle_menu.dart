@@ -35,7 +35,7 @@ class vehicle_menu {
 
             Vehicle? new_vehicle;
             if(reg_number != null && reg_number.isNotEmpty){
-              dynamic vehicle = await VehicleRepository.get_by_id(reg_number);
+              dynamic vehicle = await VehicleRepository.get_vehicle(reg_number);
 
               if(vehicle != null && vehicle is Vehicle){
                 print('\nFordonet existrerar redan, vänligen försök igen');
@@ -52,10 +52,16 @@ class vehicle_menu {
             String? person_number = stdin.readLineSync();
 
             new_vehicle =  Vehicle(id: Tools.generateId(), registration_number: reg_number ?? '', type: type ?? '', );
-            VehicleRepository.add(new_vehicle);
-            print('Bilen är tillgad');
+            bool success = await VehicleRepository.add(new_vehicle);
+            if(success){
+              print('Bilen är tillgad');
+            }
+            else {
+              print('Kunde inte lägga bilen, vänligen försök igen');
+              input_handler();
+            }
 
-            if(person_number != null && person_number.isNotEmpty){
+            if(success && person_number != null && person_number.isNotEmpty){
               dynamic person = await PersonRepository.get_person(person_number);
 
               if(person != null && person is Person){
@@ -68,6 +74,9 @@ class vehicle_menu {
               }
 
 
+              input_handler();
+            }
+            else {
               input_handler();
             }
 
@@ -102,7 +111,7 @@ class vehicle_menu {
           String? reg_number = stdin.readLineSync();
 
           if(reg_number != null && reg_number.isNotEmpty){
-            Vehicle? vehicle = await VehicleRepository.get_by_id(reg_number);
+            Vehicle? vehicle = await VehicleRepository.get_vehicle(reg_number);
 
             if(vehicle != null){
               print('Bilen hittad');
@@ -114,9 +123,18 @@ class vehicle_menu {
                 dynamic person = await PersonRepository.get_person(person_number);
                 if(person != null  && person is Person){
                   vehicle.person_id = person.id.toString();
-                   await VehicleRepository.update(vehicle);
+                   bool success = await VehicleRepository.update(vehicle);
+                   if(success) {
+                     print('Ägarens ändrad');
+                   }
+                   else {
+                     print('Kunde inte uppdatera fordonet, vänligen försök igen');
+                   }
                 }
-                print('Ägarens ändrad');
+                else {
+                  print('Personen är inte registrerad i systemet');
+                }
+
                 input_handler();
               }
               else{
@@ -137,7 +155,7 @@ class vehicle_menu {
 
           if(reg_number != null && reg_number.isNotEmpty){
 
-            Vehicle? vehicle = await VehicleRepository.get_by_id(reg_number);
+            Vehicle? vehicle = await VehicleRepository.get_vehicle(reg_number);
 
             if(vehicle != null){
 
@@ -148,7 +166,7 @@ class vehicle_menu {
                 input_handler();
               }
               else{
-                print('Ett fel har inträffat, vänligen försök igen');
+                print('Kunde inte radera bilen eller bilen kanske redan raderad, vänligen försök igen');
                 input_handler(user_input: option);
               }
 

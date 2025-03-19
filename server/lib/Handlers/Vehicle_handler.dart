@@ -15,8 +15,9 @@ class vehicle_handler{
     var vehicle = Vehicle.fromJson(json);
 
     final success = await file_helper.create(path: path, json_data: vehicle.toJson());
+
     return Response.ok(
-      jsonEncode(success ? vehicle.toJson() : null),
+      jsonEncode(success),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -37,34 +38,33 @@ class vehicle_handler{
   static Future<Response> update_vehicle(Request request) async {
     String? id = request.params["id"];
 
+    bool success = false;
     if (id != null) {
       final data = await request.readAsString();
       final json = jsonDecode(data);
       Vehicle? vehicle = Vehicle.fromJson(json);
 
-      final success = await file_helper.update(path: path, id: id, json_data: vehicle.toJson());
-
-      return Response.ok(
-        jsonEncode(success ? vehicle.toJson() : null),
-        headers: {'Content-Type': 'application/json'},
-      );
+      success = await file_helper.update(path: path, id: id, json_data: vehicle.toJson());
     }
-    return Response.badRequest();
+
+    return Response.ok(
+      jsonEncode(success),
+      headers: {'Content-Type': 'application/json'},
+    );
   }
 
   static Future<Response> delete_vehicle(Request request) async {
     String? id = request.params["id"];
 
+    bool success = false;
     if (id != null) {
-      await file_helper.delete(path: path, id: id);
-
-      return Response.ok(
-        jsonEncode(true),
-        headers: {'Content-Type': 'application/json'},
-      );
+      success = await file_helper.delete(path: path, id: id);
     }
 
-    return Response.badRequest();
+    return Response.ok(
+      jsonEncode(success),
+      headers: {'Content-Type': 'application/json'},
+    );
   }
 
   static Future<Response> get_vehicle(Request request) async {
@@ -92,6 +92,10 @@ class vehicle_handler{
 
     }
 
-    return Response.badRequest();
+    return Response.ok(
+      jsonEncode(null),
+      headers: {'Content-Type': 'application/json'},
+    );
+
   }
 }

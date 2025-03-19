@@ -39,8 +39,8 @@ class parking_menu {
             Vehicle? vehicle;
             ParkingSpace? parking_space;
             if(reg_number != null && reg_number.isNotEmpty && park_space_number != null && park_space_number.isNotEmpty){
-              parking_space =  await ParkingSpaceRepository.getByNumber(park_space_number);
-              vehicle = await VehicleRepository.get_by_id(reg_number);
+              parking_space =  await ParkingSpaceRepository.get(park_space_number);
+              vehicle = await VehicleRepository.get_vehicle(reg_number);
             }
             else {
               print('Fyll i parkeringsplats numret och fordons numret, vänligen försök igen \n');

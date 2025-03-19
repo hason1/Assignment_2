@@ -34,8 +34,14 @@ class person_menu {
                 print('$person_name existerar redan');
               }
               else {
-                await PersonRepository.add(Person(id: Tools.generateId(), name: person_name ?? '', person_number: person_number ?? ''));
-                print('$person_name tillagd');
+                bool success = await PersonRepository.add(Person(id: Tools.generateId(), name: person_name ?? '', person_number: person_number ?? ''));
+                if(success) {
+                  print('$person_name tillagd');
+                }
+                else {
+                  print('Ett fel har inträffat, vänligen försök igen \n');
+                  input_handler(user_input: option);
+                }
               }
 
               input_handler();
@@ -49,6 +55,7 @@ class person_menu {
             print('Ett fel har inträffat, vänligen försök igen \n');
             input_handler(user_input: option);
           }
+
         case '2': // Visa alla
           List persons_to_print = await PersonRepository.getAll();
           if(persons_to_print.isNotEmpty){
@@ -62,6 +69,7 @@ class person_menu {
             print("Inga personer skapade");
             input_handler();
           }
+
         case '3': // Uppdaera
           stdout.write('Skriv personnummeret för personen du vill uppdatera: ');
           String? person_number = stdin.readLineSync();
@@ -75,8 +83,13 @@ class person_menu {
 
               if(name != null && name.isNotEmpty){
                 person.name = name ?? '';
-                 await PersonRepository.update(person);
-                print('Person ändrad');
+                bool success = await PersonRepository.update(person);
+                if(success){
+                  print('Person ändrad');
+                }
+                else {
+                  print('Kunde inte uppdatera personen, vänligen försök igen \n');
+                }
                 input_handler();
               }
               else{

@@ -39,6 +39,14 @@ class parking_space_menu {
             ParkingSpace? new_parking_space;
             if(address != null &&  address.isNotEmpty && address.isNotEmpty && price != null && price.isNotEmpty && number != null && number.isNotEmpty){
               new_parking_space =  ParkingSpace(id: Tools.generateId(),  address: address ?? '', number: number ?? '', price: price ?? '', );
+
+              var old_parking_space = await ParkingSpaceRepository.get(number);
+              if(old_parking_space != null && old_parking_space is ParkingSpace){
+                print('Parkiringsplatsen existerar redan, vänligen försök igen \n');
+                input_handler(user_input: option);
+              }
+
+
             }
             else {
               print('Ett fel har inträffat, vänligen försök igen \n');
@@ -47,8 +55,13 @@ class parking_space_menu {
 
 
             if(new_parking_space != null){
-              ParkingSpaceRepository.add(new_parking_space);
-              print('Parkeringsplatsen är tillagd \n');
+              bool success =  await ParkingSpaceRepository.add(new_parking_space);
+              if(success){
+                print('Parkeringsplatsen är tillagd \n');
+              }
+              else {
+                print('Ett fel har inträffat, vänligen försök igen \n');
+              }
 
               input_handler();
             }
@@ -62,12 +75,12 @@ class parking_space_menu {
             input_handler(user_input: option);
           }
         case '2': // Visa alla
-          List parking_spaces_to_print = await ParkingSpaceRepository.getAll();
+          List parking_spaces_to_print = await ParkingSpaceRepository.get_all();
           if(parking_spaces_to_print.isNotEmpty){
             print("\nAlla parkeringsplatser:");
             for (var park_space in parking_spaces_to_print) {
               if(park_space != null){
-                print("Nummer: ${park_space.number}, Adress: ${park_space.address} Pris: ${park_space.price}\n");
+                print("Nummer: ${park_space.number}, Adress: ${park_space.address}, Pris: ${park_space.price}\n");
               }
             }
             input_handler();
@@ -81,7 +94,7 @@ class parking_space_menu {
           String? number = stdin.readLineSync();
 
           if(number != null && number.isNotEmpty){
-            ParkingSpace? parking = await ParkingSpaceRepository.getByNumber(number);
+            ParkingSpace? parking = await ParkingSpaceRepository.get(number);
 
             if(parking != null){
               stdout.write('\nParkeringsplats hittad, Ändra adress: ');
@@ -90,7 +103,13 @@ class parking_space_menu {
 
               if(address != null && address.isNotEmpty){
                 parking.address = address ?? '';
-                print('Parkeringsplats ändrad');
+                bool success = await ParkingSpaceRepository.update(parking);
+                if(success){
+                  print('Parkeringsplats ändrad');
+                }
+                else {
+                  print('Kunde inte uppdatera parkeringsplatsen, vänligen försök igen');
+                }
                 input_handler();
               }
               else{
@@ -111,11 +130,11 @@ class parking_space_menu {
 
           if(number != null && number.isNotEmpty){
 
-            ParkingSpace? parking = await ParkingSpaceRepository.getByNumber(number);
+            ParkingSpace? parking = await ParkingSpaceRepository.get(number);
 
             if(parking != null){
 
-              bool result = await ParkingSpaceRepository.delete(parking.number);
+              bool result = await ParkingSpaceRepository.delete(parking.id);
 
               if(result == true){
                 print('Parkeringen med numret ' + parking.number + ' togs bort');

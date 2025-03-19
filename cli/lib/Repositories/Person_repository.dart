@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 // Person repository to communicate with Server
 class PersonRepository {
 
-  static Future<Person?> add(Person person) async {
+  static Future<bool> add(Person person) async {
     final uri = Uri.parse("http://localhost:8080/persons");
 
     Response response = await http.post(uri,
@@ -18,13 +18,16 @@ class PersonRepository {
     if(response.statusCode == 200){
       final json = jsonDecode(response.body);
 
-      if(json != null){
-        return Person.fromJson(json);
+      if(json != null && json is bool){
+        return json;
+      }
+      else {
+        return false;
       }
 
     }
     else {
-      return null;
+      return false;
     }
   }
 
@@ -62,10 +65,10 @@ class PersonRepository {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(updatedPerson.toJson()));
 
-    final json = jsonDecode(response.body);
+    final result = jsonDecode(response.body);
 
    // return Person.fromJson(json);
-    return true;
+    return result;
 
   }
 
@@ -77,9 +80,9 @@ class PersonRepository {
       headers: {'Content-Type': 'application/json'},
     );
 
-    final json = jsonDecode(response.body);
+    final result = jsonDecode(response.body);
 
    // return Person.fromJson(json);
-    return true;
+    return result;
   }
 }

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class VehicleRepository {
 
- static Future<Vehicle?> add(Vehicle vehicle) async {
+ static Future<bool> add(Vehicle vehicle) async {
    final uri = Uri.parse("http://localhost:8080/vehicles");
 
    Response response = await http.post(uri,
@@ -17,12 +17,14 @@ class VehicleRepository {
      final json = jsonDecode(response.body);
 
      if(json != null){
-       return Vehicle.fromJson(json);
+       return json;
      }
-
+     else {
+       return false;
+     }
    }
    else {
-     return null;
+     return false;
    }
   }
 
@@ -36,8 +38,8 @@ class VehicleRepository {
     return (json as List).map((e) => Vehicle.fromJson(e)).toList();
   }
 
-  static Future<Vehicle?> get_by_id(String registrationNumber) async {
-    final uri = Uri.parse("http://localhost:8080/vehicles/${registrationNumber}");
+  static Future<Vehicle?> get_vehicle(String id_or_number) async {
+    final uri = Uri.parse("http://localhost:8080/vehicles/${id_or_number}");
 
     Response response = await http.get(
       uri,
@@ -62,7 +64,7 @@ class VehicleRepository {
     final json = jsonDecode(response.body);
 
     // return Person.fromJson(json);
-    return true;
+    return json;
   }
 
   static Future<bool> delete(String registrationNumber) async {
@@ -76,6 +78,6 @@ class VehicleRepository {
     final json = jsonDecode(response.body);
 
     // return Person.fromJson(json);
-    return true;
+    return json;
   }
 }
