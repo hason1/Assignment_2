@@ -1,41 +1,82 @@
-
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:shared/shared.dart';
+import 'package:http/http.dart' as http;
 
 class ParkingRepository {
   static final List<Parking> _parkings = [];
 
-  static Future add(Parking parking) async{
-    _parkings.add(parking);
+  static Future<bool> add(Parking parking) async{
+    final uri = Uri.parse("http://localhost:8080/parking");
+
+    Response response = await http.post(uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(parking.toJson()));
+
+    if(response.statusCode == 200){
+      final json = jsonDecode(response.body);
+
+      if(json != null && json is bool){
+        return json;
+      }
+      else {
+        return false;
+      }
+
+    }
+    else {
+      return false;
+    }
   }
 
   static Future<List<Parking>> getAll() async {
-    return _parkings;
+    final uri = Uri.parse("http://localhost:8080/parking");
+
+    Response response = await http.get(uri,
+      headers: {'Content-Type': 'application/json'},);
+    final json = jsonDecode(response.body);
+
+    return (json as List).map((e) => Parking.fromJson(e)).toList();
   }
 
-  static Future<Parking?> getById(String vehicleRegistration) async {
-    try {
-      return _parkings.firstWhere((p) => p.vehicle.registration_number == vehicleRegistration);
-    } catch (e) {
-      return null;
+  static Future<Parking?> get_parking(String id_or_number) async {
+    final uri = Uri.parse("http://localhost:8080/parking/${id_or_number}");
+
+    Response response = await http.get(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    final json = jsonDecode(response.body);
+
+    if(json != null){
+      return Parking.fromJson(json);
     }
+    else return null;
   }
 
   static Future<bool> update(Parking updatedParking) async {
-    for (int i = 0; i < _parkings.length; i++) {
-      if (_parkings[i].vehicle.registration_number == updatedParking.vehicle.registration_number) {
-        _parkings[i] = updatedParking;
-        return true;
-      }
-    }
-    return false;
+    final uri = Uri.parse("http://localhost:8080/parking/${updatedParking.id}");
+
+    Response response = await http.put(uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(updatedParking.toJson()));
+
+    final result = jsonDecode(response.body);
+
+    return result;
   }
 
-  static Future<bool> delete(String vehicleRegistration) async {
-    try {
-      _parkings.removeWhere((p) => p.vehicle.registration_number == vehicleRegistration);
-      return true;
-    } catch (e) {
-      return false;
-    }
+  static Future<bool> delete(String id) async {
+    final uri = Uri.parse("http://localhost:8080/parking/${id}");
+
+    Response response = await http.delete(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    final result = jsonDecode(response.body);
+
+    return result;
   }
 }

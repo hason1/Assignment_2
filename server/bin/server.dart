@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:server/Handlers/Parking_handler.dart';
 import 'package:server/Handlers/Parking_space_handler.dart';
 import 'package:server/Handlers/Person_handler.dart';
 import 'package:server/Handlers/Vehicle_handler.dart';
@@ -27,7 +28,12 @@ final _router =
       ..get('/parking_spaces', parking_space_handler.get_parking_spaces)
       ..get('/parking_spaces/<id>', parking_space_handler.get_parking_space)
       ..put('/parking_spaces/<id>', parking_space_handler.update_parking_space)
-      ..delete('/parking_spaces/<id>', parking_space_handler.delete_parking_space);
+      ..delete('/parking_spaces/<id>', parking_space_handler.delete_parking_space)
+      ..post('/parking', parking_handler.add_parking)
+      ..get('/parking', parking_handler.get_parkings)
+      ..get('/parking/<id>', parking_handler.get_parking)
+      ..put('/parking/<id>', parking_handler.update_parking)
+      ..delete('/parking/<id>', parking_handler.delete_parking);
 
 
 Response _rootHandler(Request req) {

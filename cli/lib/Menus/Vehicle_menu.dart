@@ -66,8 +66,13 @@ class vehicle_menu {
 
               if(person != null && person is Person){
                 new_vehicle.person_id = person.id;
-                VehicleRepository.update(new_vehicle);
-                print('Bilen är uppdaterat med ägeren');
+                bool success =  await VehicleRepository.update(new_vehicle);
+                if(success){
+                  print('Ägaren är tillagd till bilen');
+                }
+                else {
+                  print('Kunde inte ändra ägaren');
+                }
               }
               else {
                 print('Kunde inte hitta personen');

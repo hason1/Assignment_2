@@ -10,4 +10,4 @@
 10- Cli -> Repositories funktioner innehåll ändrades så att den kan kommunicera med server
 11- I Server  skapade jag File_helper.dart för att server kommer spara data i fil, denna fil helper hanterar data lagring.
 12- För att hantera server anrop från klienten så skapade handler för personer, fordon, parkering som tar emot användarens anrop och hantera det genom att spara eller returnera data som json
-13- Class ändring: id sträng parameter är tillagd
+13- Class ändring: id sträng parameter är tillagd, så att vi kopplar via id istället för att lägga hela objektet

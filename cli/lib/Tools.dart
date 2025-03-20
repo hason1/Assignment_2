@@ -6,7 +6,7 @@ class Tools {
     final RegExp timePattern = RegExp(r'^(?:[01]\d|2[0-3]):[0-5]\d$'); // Format ska vara HH:mm
 
     while (true) {
-      stdout.write('Skriv ' + text + ' (t.ex. 16:00): ');
+      stdout.write('Skriv ' + text + ' : ');
       String? input = stdin.readLineSync()?.trim();
 
       if (input == null || input.isEmpty) {

@@ -5,16 +5,16 @@ import 'package:shared/shared.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-// Vehicle server request handler
-class vehicle_handler{
-  static String path = "./vehicles.json";
+// Parking server request handler
+class parking_handler{
+  static String path = "./parking.json";
 
-  static Future<Response> add_vehicle(Request request) async {
+  static Future<Response> add_parking(Request request) async {
     final data = await request.readAsString();
     final json = jsonDecode(data);
-    var vehicle = Vehicle.fromJson(json);
+    var parking = Parking.fromJson(json);
 
-    final success = await file_helper.create(path: path, json_data: vehicle.toJson());
+    final success = await file_helper.create(path: path, json_data: parking.toJson());
 
     return Response.ok(
       jsonEncode(success),
@@ -23,11 +23,11 @@ class vehicle_handler{
 
   }
 
-  static Future<Response> get_vehicles(Request request) async {
+  static Future<Response> get_parkings(Request request) async {
     final items = await file_helper.getAll(path: path,);
-    List<Vehicle> vehicles = items.map((json) => Vehicle.fromJson(json)).toList();
+    List<Parking> parking = items.map((json) => Parking.fromJson(json)).toList();
 
-    final payload = vehicles.map((e) => e.toJson()).toList();
+    final payload = parking.map((e) => e.toJson()).toList();
 
     return Response.ok(
       jsonEncode(payload),
@@ -35,16 +35,16 @@ class vehicle_handler{
     );
   }
 
-  static Future<Response> update_vehicle(Request request) async {
+  static Future<Response> update_parking(Request request) async {
     String? id = request.params["id"];
 
     bool success = false;
     if (id != null) {
       final data = await request.readAsString();
       final json = jsonDecode(data);
-      Vehicle? vehicle = Vehicle.fromJson(json);
+      Parking? parking = Parking.fromJson(json);
 
-      success = await file_helper.update(path: path, id: id, json_data: vehicle.toJson());
+      success = await file_helper.update(path: path, id: id, json_data: parking.toJson());
     }
 
     return Response.ok(
@@ -53,7 +53,7 @@ class vehicle_handler{
     );
   }
 
-  static Future<Response> delete_vehicle(Request request) async {
+  static Future<Response> delete_parking(Request request) async {
     String? id = request.params["id"];
 
     bool success = false;
@@ -67,18 +67,18 @@ class vehicle_handler{
     );
   }
 
-  static Future<Response> get_vehicle(Request request) async {
+  static Future<Response> get_parking(Request request) async {
     String? id = request.params["id"];
 
     if (id != null) {
       final items = await file_helper.getAll(path: path,);
-      List<Vehicle> vehicles = items.map((json) => Vehicle.fromJson(json)).toList();
+      List<Parking> parkings = items.map((json) => Parking.fromJson(json)).toList();
 
-      for(int i=0; i<vehicles.length; i++){
+      for(int i=0; i<parkings.length; i++){
 
-        if(vehicles[i].id == id || vehicles[i].registration_number == id){
+        if(parkings[i].id == id || parkings[i].parking_number == id){
           return Response.ok(
-            jsonEncode(vehicles[i].toJson()),
+            jsonEncode(parkings[i].toJson()),
             headers: {'Content-Type': 'application/json'},
           );
         }
