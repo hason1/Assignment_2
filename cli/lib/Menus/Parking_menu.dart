@@ -11,14 +11,14 @@ import '../Repositories/Parking_space_repository.dart';
 class parking_menu {
   static input_handler({String user_input = ''}) async{
 
-    List main_options = ['1', '2', '3', '4', '5'];
+    List main_options = ['1', '2', '3', '4', '5', '6'];
     String? option;
     if(user_input.isNotEmpty){
       option = user_input;
     }
     else {
-      stdout.writeln('\nDu har valt att hantera Parkeringar. Vad vill du göra?\n1. Lägg till ny parkering\n2. Visa alla parkeringar\n3. Ändra parkeringsplats\n4. Ändra fordon\n5. Ändra start och slut\n6. Gå tillbaka till huvudmenyn');
-      stdout.write('\nVälj ett alternativ (1-6): ');
+      stdout.writeln('\nDu har valt att hantera Parkeringar. Vad vill du göra?\n1. Lägg till ny parkering\n2. Visa alla parkeringar\n3. Ändra parkeringsplats\n4. Ändra fordon\n5. Ändra start och slut\n6. Ta bort parkering\n6. Gå tillbaka till huvudmenyn');
+      stdout.write('\nVälj ett alternativ (1-7): ');
       option = stdin.readLineSync();
     }
 
@@ -126,8 +126,10 @@ class parking_menu {
 
 
               if(parking.start_time != null && parking.end_time != null){
-                print("Starttid: ${parking.start_time}, Sluttid: ${parking.end_time}");
+                print("Starttid: ${parking.start_time}, Sluttid: ${parking.end_time}\n");
               }
+
+
             }
             input_handler();
           }
@@ -258,7 +260,36 @@ class parking_menu {
               input_handler(user_input: option);
             }
           }
+
         case '6':
+            stdout.write('Skriv numret för parkeringen du vill ta bort: ');
+            String? number = stdin.readLineSync();
+
+            if(number != null && number.isNotEmpty){
+              Parking? parking = await ParkingRepository.get_parking(number);
+
+              if(parking != null){
+                bool success =  await ParkingRepository.delete(parking.id);
+                if(success){
+                  print('Parkeringsplatsen ' + parking.parking_number.toString() + ' tog');
+                }
+                else{
+                  print('Kunde inte ta bort parkeringsplatsen, vänligen försök igen \n');
+                }
+
+                  input_handler();
+
+                }
+                else{
+                  input_handler(user_input: option);
+                }
+
+              }
+              else {
+                print('Kunde inte hitta parkeringen, vänligen försök igen \n');
+                input_handler(user_input: option);
+              }
+        case '7':
           main_functions.start_app();
         default:
           main_functions.start_app();
