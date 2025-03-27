@@ -14,8 +14,7 @@ class file_helper {
       await file.create(exclusive: true);
       await file.writeAsString(jsonEncode([]));
     } catch (e) {
-      // file already exists
-      // dont try to create a database file if it exists.
+      // file exists
     }
 
     try {
@@ -27,7 +26,6 @@ class file_helper {
 
       await file.writeAsString(jsonEncode(json));
     } catch (e) {
-      // TODO: Log error information so Dennis can check it later
       return false;
     }
 
@@ -43,8 +41,7 @@ class file_helper {
       await file.create(exclusive: true);
       await file.writeAsString(jsonEncode([]));
     } catch (e) {
-      // file already exists
-      // dont try to create a database file if it exists.
+      // file  exists
     }
 
     String content = await file.readAsString();
@@ -60,7 +57,7 @@ class file_helper {
       await file.create(exclusive: true);
       await file.writeAsString(jsonEncode([]));
     } catch (e) {
-      // file already exists
+      // file exists
     }
 
     var entities = await getAll(path: path);
@@ -87,7 +84,7 @@ class file_helper {
       await file.create(exclusive: true);
       await file.writeAsString(jsonEncode([]));
     } catch (e) {
-      // file already exists
+      // file exists
     }
 
     var entities = await getAll(path: path);
@@ -96,7 +93,6 @@ class file_helper {
       if (entities[i]['id'].toString() == id) {
         final entity = entities.removeAt(i);
 
-        // write the items in file again
         await file.writeAsString(
             jsonEncode(entities.map((item) => item).toList()));
         return true;
